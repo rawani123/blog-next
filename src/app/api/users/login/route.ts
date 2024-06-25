@@ -24,7 +24,6 @@ export const POST = async(req:NextRequest)=>{
         const res = NextResponse.json({message:`Welcome Back ${user.username}`},{status:200});
         res.cookies.set("token",token,{httpOnly:true});
         return res;
-
     } catch (error:any) {
        return NextResponse.json({message:error.message},{status:500}) 
     }
