@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    blogs:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"blogs"
-    }],
+    // blogs:[{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"blogs"
+    // }],
 },{timestamps:true});
 
 const User = mongoose.models.users || mongoose.model('users',userSchema);
