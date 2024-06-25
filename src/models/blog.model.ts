@@ -13,13 +13,13 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // user:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "users"
-    // }
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }
 },{timestamps: true});
 
 
-const Blog = mongoose.models.Blog || mongoose.model("blogs",blogSchema);
+const Blog = mongoose.models.vlogs || mongoose.model("vlogs",blogSchema);
 
 export default Blog;
