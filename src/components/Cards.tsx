@@ -12,7 +12,6 @@ interface Cards {
 }
 
 const Cards: React.FC<Cards> = ({ id, title, caption, image, username }) => {
-  const router = useRouter();
   const pathName = usePathname();
   console.log(pathName);
 
@@ -29,7 +28,7 @@ const Cards: React.FC<Cards> = ({ id, title, caption, image, username }) => {
   };
 
   return (
-    <div className="mt-20">
+    <div className="mt-20 mx-4">
       <article className="flex bg-white transition hover:shadow-xl">
         <div className="hidden sm:block sm:basis-56">
           <img
@@ -42,7 +41,7 @@ const Cards: React.FC<Cards> = ({ id, title, caption, image, username }) => {
           <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
             <a href="#">
               <h1 className="font-bold text-2xl uppercase text-black">
-                {username}
+                {username}  
               </h1>
               <hr className=" border border-slate-600 " />
               <h3 className="font-bold mt-2 uppercase text-gray-900">

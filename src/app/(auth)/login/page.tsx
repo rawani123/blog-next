@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Change this import
 import toast from "react-hot-toast";
+import Header from "@/components/Header";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -36,6 +37,8 @@ const LoginPage = () => {
   }, [user]);
 
   return (
+    <>
+    <Header/>
     <div className="flex justify-center items-center bg-blue-200 min-h-screen">
       <div className="bg-white p-10 shadow-lg rounded-lg">
         <h1 className="font-bold text-blue-700">LOGIN</h1>
@@ -74,6 +77,7 @@ const LoginPage = () => {
         </p>
       </div>
     </div>
+    </>
   );
 };
 

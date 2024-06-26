@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, {      useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Change this import
 import toast from "react-hot-toast";
+import Header from "@/components/Header";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -37,7 +38,8 @@ const SignupPage = () => {
       setDisable(true);
     }
   }, [user]);
-  return (
+  return (<>
+  <Header/>
     <div className="flex justify-center items-center bg-blue-200 min-h-screen">
       <div className="bg-white p-10 shadow-lg rounded-lg">
         <h1 className="font-bold text-blue-700">SIGNUP</h1>
@@ -85,6 +87,7 @@ const SignupPage = () => {
         </p>
       </div>
     </div>
+    </>
   );
 };
 

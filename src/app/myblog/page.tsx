@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cards from "@/components/Cards";
+import Header from "@/components/Header";
 
 interface Blogs {
   _id: string;
@@ -36,6 +37,7 @@ const MyBlog = () => {
 
   return (
     <div>
+      <Header/>  
       {blogs.length > 0 ? (
         <div className="mt-20 h-screen">
           {blogs.map((blog) => (

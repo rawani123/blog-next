@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Header from "@/components/Header";
 
 interface Params {
   id: number;
@@ -53,6 +54,7 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
 
   return (
     <>
+    <Header/>
       {blogData && (
         <div className="flex items-center justify-center">
           <div className="px-4 py-24 sm:px-6 lg:px-8 h-[580px] w-[600px]">

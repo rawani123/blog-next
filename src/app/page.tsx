@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Cards from "@/components/Cards";
 import axios, { AxiosResponse } from "axios";
+import Header from "@/components/Header";
 
 interface Blogs {
   _id: string;
@@ -22,7 +23,7 @@ export default function Home() {
     const fetchBlogs = async () => {
       try {
         const res: AxiosResponse<{ data: Blogs[]; message: string }> =
-          await axios.get("/api/blogs/getallblogs");
+          await axios.get("/api/blog/getallblogs");
         if (res.status === 200) {
           setBlogs(res.data.data);
           console.log(res.data.data);
@@ -44,6 +45,7 @@ export default function Home() {
 
   return (
     <>
+    <Header />
       {blogs.length > 0 ? (
         blogs.map((blog) => (
           <Cards
