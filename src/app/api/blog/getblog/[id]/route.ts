@@ -14,8 +14,6 @@ export const GET = async (req: NextRequest,context:{ params: Params }) => {
         const id = new mongoose.Types.ObjectId(context.params.id);
         const blogs = await Blog.find({user:id}).populate("user");
         return NextResponse.json({ data: blogs }, { status: 200 });
-        // const blogs = await Blog.find().populate("user");
-        // return NextResponse.json({ data: blogs }, { status: 200 });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }

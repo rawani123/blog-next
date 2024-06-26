@@ -5,10 +5,13 @@ import Cards from "@/components/Cards";
 import axios, { AxiosResponse } from "axios";
 
 interface Blogs {
-  _id: string; // Make sure _id is typed as a string
+  _id: string;
   title: string;
   img: string;
   caption: string;
+  user: {
+    username: string;
+  };
 }
 
 export default function Home() {
@@ -19,7 +22,7 @@ export default function Home() {
     const fetchBlogs = async () => {
       try {
         const res: AxiosResponse<{ data: Blogs[]; message: string }> =
-          await axios.get("/api/blog/getallblogs");
+          await axios.get("/api/blogs/getallblogs");
         if (res.status === 200) {
           setBlogs(res.data.data);
           console.log(res.data.data);
@@ -42,17 +45,16 @@ export default function Home() {
   return (
     <>
       {blogs.length > 0 ? (
-        <div className="mt-20">
-          {blogs.map((blog) => (
-            <Cards
-              key={blog._id}
-              id={blog._id}
-              title={blog.title}
-              image={blog.img}
-              caption={blog.caption}
-            />
-          ))}
-        </div>
+        blogs.map((blog) => (
+          <Cards
+            key={blog._id}
+            id={blog._id}
+            title={blog.title}
+            image={blog.img}
+            caption={blog.caption}
+            username={blog.user.username} // Pass the username to the Cards component
+          />
+        ))
       ) : (
         <div>No blogs available</div>
       )}

@@ -11,7 +11,7 @@ type Params = {
 export const GET = async (req: NextRequest, context: { params: Params }) => {
   try {
     const id = context.params.id;
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id).select("-password").populate("blogs")  ;
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }

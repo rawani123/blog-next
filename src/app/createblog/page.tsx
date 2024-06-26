@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const CreateBlog = () => {
-  const [blogData, setBlogData] = useState<{ title: string; caption: string; img: string }>({ title: "", caption: "", img: "" });
+  const router = useRouter();
+  const [blogData, setBlogData] = useState({ title: "", caption: "", img: "" });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const router = useRouter();
-  
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Fetch user ID from cookies
     const userId = localStorage.getItem("userId");
     if (!userId) {
       setError("User not authenticated.");
@@ -27,6 +27,7 @@ const CreateBlog = () => {
       );
       if (response.status === 201) {
         setSuccess("Blog created successfully!");
+
         setBlogData({ title: "", caption: "", img: "" });
         router.push("/");
       } else {
@@ -40,9 +41,9 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       <div className="px-4 py-24 sm:px-6 lg:px-8 h-[580px] w-[600px]">
-        <div className="mx-auto max-w-lg">
+        <div className="mx-auto pt-3 rounded-xl max-w-lg bg-white">
           <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
             Create your Blog
           </h1>
