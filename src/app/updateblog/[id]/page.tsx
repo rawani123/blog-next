@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Header from "@/components/Header";
 
 interface Params {
   id: number;
@@ -21,7 +20,6 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(`/api/blog/getblog/${params.id}`);
-
         if (res.status === 200) {
           setBlogData(res.data.data);
         } else {
@@ -54,12 +52,11 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
 
   return (
     <>
-    <Header/>
       {blogData && (
         <div className="flex items-center justify-center">
-          <div className="px-4 py-24 sm:px-6 lg:px-8 h-[580px] w-[600px]">
-            <div className="mx-auto max-w-lg">
-              <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
+          <div className="px-4 py-24 sm:px-6 lg:px-8 h-[567px] w-[600px]">
+            <div className="mx-auto pt-4 bg-[#3c4b9b] rounded-xl max-w-lg">
+              <h1 className="text-center text-2xl font-bold text-white sm:text-3xl">
                 Update your Blog
               </h1>
 
@@ -123,7 +120,7 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
 
                 <button
                   type="submit"
-                  className="block w-full rounded-lg bg-indigo-400 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600"
+                  className="block w-full rounded-lg text-black bg-gray-200 px-5 py-3 text-sm font-medium  hover:bg-gray-400"
                 >
                   Submit
                 </button>

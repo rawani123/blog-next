@@ -5,7 +5,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Change this import
 import toast from "react-hot-toast";
-import Header from "@/components/Header";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -18,11 +17,11 @@ const LoginPage = () => {
 
   const submitHandler = async () => {
     try {
-      const res = await axios.post("/api/users/login", user); 
+      const res = await axios.post("/api/users/login", user); // Pass the user data
       localStorage.setItem("userId", res.data.id);
       router.push("/");
+      window.location.reload();
       toast.success(res.data.message);
-
     } catch (error: any) {
       toast.error(error.response?.data?.message || "An error occurred");
     }
@@ -37,18 +36,16 @@ const LoginPage = () => {
   }, [user]);
 
   return (
-    <>
-    <Header/>
-    <div className="flex justify-center items-center bg-blue-200 min-h-screen">
+    <div className="flex justify-center items-center bg-[#FDC5F5] min-h-screen">
       <div className="bg-white p-10 shadow-lg rounded-lg">
-        <h1 className="font-bold text-blue-700">LOGIN</h1>
+        <h1 className="font-bold text-[#813476]">LOGIN</h1>
         <div className="flex flex-col my-4">
           <label>Email</label>
           <input
             type="email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="border-2 outline-none border-zinc-500 rounded-md px-2 py-1"
+            className="border-2 focus:outline-none active:ring-0 focus:ring-0 focus:ring-black outline-none border-zinc-500 rounded-md px-2 py-1"
           />
         </div>
         <div className="flex flex-col my-4">
@@ -63,21 +60,20 @@ const LoginPage = () => {
         <button
           onClick={submitHandler}
           className={`${
-            disable ? "bg-[#e3e3e3] cursor-not-allowed" : "bg-[#4974b4]"
+            disable ? "bg-[#e3e3e3] cursor-not-allowed" : "bg-[#742b69]"
           } w-full py-1 my-2 rounded-md text-white`}
           disabled={disable}
         >
           Login
         </button>
         <p className="mt-4">
-          Don't have an account?{" "}
-          <Link href="/signup" className="font-bold">
+          Dont have an account? &apos;
+          <Link href="/signup" className="font-bold text-[#813476]">
             SIGNUP
           </Link>
         </p>
       </div>
     </div>
-    </>
   );
 };
 
