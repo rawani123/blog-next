@@ -1,10 +1,17 @@
+import { v2 as cloudinary } from 'cloudinary';
 import Blog from "@/models/blog.model";
 import dbConnection from "@/config/db";
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises"; // Using fs.promises for async writeFile
-import path from "path";
+import streamifier from 'streamifier';
 
 dbConnection();
+
+// Cloudinary configuration
+cloudinary.config({ 
+    cloud_name: 'rawani1234', 
+    api_key: '535136936882345', 
+    api_secret: 'TAqeBdhi2uWIkbeUknAc-d7O8RE' // Replace with your actual API secret
+});
 
 type Params = {
   id: string;
@@ -15,29 +22,55 @@ export const PUT = async (req: NextRequest, context: { params: Params }) => {
     const body = await req.formData();
     const id = context.params.id;
 
-    const title = body.get("title") as string | null;
-    const caption = body.get("caption") as string | null;
+    let title = body.get("title") as string | null;
+    let caption = body.get("caption") as string | null;
     const img = body.get("img") as File | null;
+
+    // Assign default values if null
+    if (title === null) {
+      title = ""; // or title = null;
+    }
+
+    if (caption === null) {
+      caption = ""; // or caption = null;
+    }
 
     const updateFields: { [key: string]: any } = {};
 
-    if (title) {
+    if (title !== null) {
       updateFields.title = title;
     }
 
-    if (caption) {
+    if (caption !== null) {
       updateFields.caption = caption;
     }
 
     if (img) {
       const buffer = await img.arrayBuffer();
-      const imgFileName = `${title || "image"}.jpg`;
-      const imgPath = path.join(process.cwd(), "public/images", imgFileName);
+
+      // Function to upload buffer to Cloudinary
+      const uploadToCloudinary = (): Promise<any> => {
+        return new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { resource_type: 'image', public_id: `${title || "image"}` },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+
+          streamifier.createReadStream(Buffer.from(buffer)).pipe(uploadStream);
+        });
+      };
+
       try {
-        await writeFile(imgPath, Buffer.from(buffer)); // Write Buffer to file
-        updateFields.img = `/images/${imgFileName}`;
-      } catch (writeError) {
-        console.error("Error writing file:", writeError);
+        const uploadResult = await uploadToCloudinary();
+        updateFields.img = uploadResult.secure_url;
+      } catch (uploadError) {
+        console.error("Error uploading to Cloudinary:", uploadError);
         return NextResponse.json({ message: "Error saving image file" }, { status: 500 });
       }
     }
@@ -56,6 +89,7 @@ export const PUT = async (req: NextRequest, context: { params: Params }) => {
       { status: 200 }
     );
   } catch (error: any) {
+    console.error("Error updating blog:", error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };

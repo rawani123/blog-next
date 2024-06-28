@@ -24,6 +24,7 @@ export default function Home() {
       try {
         const res: AxiosResponse<{ data: Blogs[]; message: string }> =
           await axios.get("/api/blog/getallblogs");
+          console.log("error")
         if (res.status === 200) {
           setBlogs(res.data.data);
           console.log(res.data.data);
