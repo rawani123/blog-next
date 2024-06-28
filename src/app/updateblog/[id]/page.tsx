@@ -11,8 +11,18 @@ interface UpdateBlogProps {
   params: Params;
 }
 
+interface BlogData {
+  title: string;
+  caption: string;
+  img: File | null; // Make img property nullable
+}
+
 const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
-  const [blogData, setBlogData] = useState({ title: "", caption: "", img: "" });
+  const [blogData, setBlogData] = useState<BlogData>({
+    title: "",
+    caption: "",
+    img: null, // Initialize img as null
+  });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
@@ -35,18 +45,29 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.put(
-        `/api/blog/updateblog/${params.id}`,
-        blogData
-      );
-      if (res.status === 200) {
-        setSuccess(res.data.message);
-        router.push("/myblog");
-      } else {
-        setError(res.data.message);
+      const formData = new FormData();
+      formData.append("title", blogData.title);
+      formData.append("caption", blogData.caption);
+      if (blogData.img) {
+        formData.append("img", blogData.img); // Append the file if it exists
       }
-    } catch (error: any) {
-      console.error("Error updating blog:", error);
+
+      const response = await axios.put(
+        `/api/blog/updateblog/${params.id}`,
+        formData
+      );
+      if (response.status === 201) {
+        setSuccess("Blog updated successfully!");
+
+        setBlogData({ title: "", caption: "", img: null });
+        router.push("/");
+      } else {
+        setError(response.data.message || "Something went wrong.");
+      }
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || err.message || "An error occurred."
+      );
     }
   };
 
@@ -101,18 +122,25 @@ const UpdateBlog: React.FC<UpdateBlogProps> = ({ params }) => {
                   <label htmlFor="img" className="sr-only">
                     Image
                   </label>
-                  <div className="relative">
-                    <input
-                      name="img"
-                      value={blogData.img}
-                      onChange={(e) =>
-                        setBlogData({ ...blogData, img: e.target.value })
-                      }
-                      type="text"
-                      className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                      placeholder="Enter Image link"
-                    />
-                  </div>
+                  <div>
+                    <label htmlFor="img" className="sr-only">
+                      Image
+                    </label>
+                    <div className="flex">
+                      <input
+                        name="img"
+                        onChange={(e) =>
+                          setBlogData({
+                            ...blogData,
+                            img: e.target.files?.[0] || null,
+                          })
+                        }
+                        type="file"
+                        className="w-full rounded-lg hover:bg-neutral-50 p-4 pe-12 text-sm shadow-sm"
+                        placeholder="Enter Image link"
+                      />
+                    </div>
+                  </div>  
                 </div>
 
                 {error && <p className="text-red-500 text-sm">{error}</p>}

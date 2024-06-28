@@ -19,7 +19,7 @@ const Cards: React.FC<Cards> = ({ id, title, caption, image, username }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`/api/blogs/deleteblog/${id}`)
+      .delete(`/api/blog/deleteblog/${id}`)
       .then((res) => {
         console.log(res.data.message);
         window.location.reload();

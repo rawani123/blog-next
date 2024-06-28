@@ -21,6 +21,8 @@ export const POST = async (req: NextRequest, context: { params: Params }) => {
     const caption = body.get("caption");
     const img = body.get("img");
 
+
+
     if (!title || !caption || !img || typeof img === 'string') {
       return NextResponse.json(
         { message: "Please fill all fields" },
@@ -28,18 +30,18 @@ export const POST = async (req: NextRequest, context: { params: Params }) => {
       );
     }
 
-    const file = img as File; // Asserting img as File
-    
-    const buffer = await file.arrayBuffer();
-    const imgFileName = `${title}.jpg`;
-    const imgPath = path.join(process.cwd(), "public/images", imgFileName);
-    
-    try {
-      await writeFile(imgPath, Buffer.from(buffer)); // Write Buffer to file
-    } catch (writeError) {
-      console.error("Error writing file:", writeError);
-      return NextResponse.json({ message: "Error saving image file" }, { status: 500 });
-    }
+      const file = img as File; // Asserting img as File
+      
+      const buffer = await file.arrayBuffer();
+      const imgFileName = `${title}.jpg`;
+      const imgPath = path.join(process.cwd(), "public/images", imgFileName);
+      
+      try {
+        await writeFile(imgPath, Buffer.from(buffer)); // Write Buffer to file
+      } catch (writeError) {
+        console.error("Error writing file:", writeError);
+        return NextResponse.json({ message: "Error saving image file" }, { status: 500 });
+      }
 
     const user = await User.findById(id);
     if (!user) {
