@@ -10,9 +10,9 @@ dbConnection();
 
 // Cloudinary configuration
 cloudinary.config({ 
-    cloud_name: 'rawani1234', 
-    api_key: '535136936882345', 
-    api_secret: 'TAqeBdhi2uWIkbeUknAc-d7O8RE' // Replace with your actual API secret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME , 
+  api_key: process.env.CLOUDINARY_API_KEY , 
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 type Params = {
